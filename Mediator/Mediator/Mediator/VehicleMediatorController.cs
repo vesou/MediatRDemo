@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Mediator.Entities;
@@ -11,12 +12,14 @@ namespace Mediator.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class VehicleController : ControllerBase
+    public class VehicleMediatorController : ControllerBase
     {
         private readonly IVehicleManager _manager;
         private readonly ILogger _logger;
+        //private readonly IMediator _mediator;
+        //private readonly IMapper _mapper;
 
-        public VehicleController(IVehicleManager vehicleManager, ILogger<VehicleController> logger)
+        public VehicleMediatorController(IVehicleManager vehicleManager, ILogger<VehicleMediatorController> logger)
         {
             _manager = vehicleManager;
             _logger = logger;
@@ -62,14 +65,12 @@ namespace Mediator.Controllers
             return new OkObjectResult(purchaseResponse);
         }
 
-        [HttpPost("Bid")]
-        public async Task<IActionResult> PlaceBidOnVehicle([FromBody] BidRequest bidRequest)
-        {
-            UserInfo userInfo = JWTHelper.GetUserInfoFromToken(User.Claims.ToList(), Request.Headers);
-            BidResponse bidResponse = await _manager.Bid(userInfo.BuyerId.Value, bidRequest);
-            _logger.LogInformation("Bid called , request: {@BiddingRequest}, response: {@BiddingResult}", bidRequest, bidResponse);
-            
-            return new OkObjectResult(bidResponse);
-        }
+        // [HttpPost("Bid")]
+        // public async Task<IActionResult> PlaceBidOnVehicle([FromBody] BidRequest bidRequest)
+        // {
+        //     PlaceBid.Response bidResponse = await _mediator.Send(_mapper.Map<PlaceBid.Command>(bidRequest));
+        //
+        //     return new OkObjectResult(bidResponse);
+        // }
     }
 }
