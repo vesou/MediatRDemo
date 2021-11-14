@@ -49,7 +49,7 @@ namespace OneLink.Microservices.Vehicles.Commands
                 _logger = logger;
             }
 
-            // TODO: propagate cancellation token to all async calls that we want to allow a cancel
+            // TODO: propagate cancellation token to all async calls that we want to allow a cancel 
             // - if it's after the point of "no going back" don't pass it anymore
             // let's discuss if it's worth using it - this might be useful with MediatR to handle graceful shutdown etc. 
             public async Task<Response> Handle(Command request, CancellationToken cancellationToken)

@@ -1,11 +1,13 @@
 ﻿using System;
-using System.Linq;
+using System.Data.SqlTypes;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Mediator.Entities;
-using Mediator.Helpers;
 using Mediator.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Polly;
 
 namespace Mediator.Controllers
 {
@@ -13,60 +15,68 @@ namespace Mediator.Controllers
     [Route("[controller]")]
     public class VehicleController : ControllerBase
     {
-        private readonly IVehicleManager _manager;
+        private readonly IVehicleManager _vehicleManager;
+        private readonly IShortlistManager _shortlistManager;
         private readonly ILogger _logger;
+        
+        private const int MaxRetryAttempts = 3;
+        private readonly TimeSpan _pauseBetweenFailures = TimeSpan.FromSeconds(2);
 
-        public VehicleController(IVehicleManager vehicleManager, ILogger<VehicleController> logger)
+        public VehicleController(IVehicleManager vehicleVehicleManager, ILogger<VehicleController> logger, IShortlistManager shortlistManager)
         {
-            _manager = vehicleManager;
+            _vehicleManager = vehicleVehicleManager;
             _logger = logger;
-        }
-
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> Details([FromRoute] int id)
-        {
-            UserInfo userInfo = JWTHelper.GetUserInfoFromToken(User.Claims.ToList(), Request.Headers);
-            MockResponse vehicleDetailsView = await _manager.GetVehicleDetails(userInfo.BuyerId.Value, id);
-            _logger.LogInformation("Mock message, request: , response: ");
-
-            return new OkObjectResult(vehicleDetailsView);
+            _shortlistManager = shortlistManager;
         }
 
         [HttpPost("Shortlist")]
-        public async Task<IActionResult> ShortlistAction([FromBody] MockRequest mockInfo)
+        public async Task<IActionResult> Shortlist([FromBody] ShortlistRequest shortlistRequest) 
         {
-            UserInfo userInfo = JWTHelper.GetUserInfoFromToken(User.Claims.ToList(), Request.Headers);
-            await _manager.UpdateShortlist(userInfo.BuyerId.Value, userInfo.UserId.Value, mockInfo);
-            _logger.LogInformation("Mock message, request: , response: ");
+            await _shortlistManager.UpdateShortlist(shortlistRequest);
+            _logger.LogInformation("Update shortlist called for VehicleId: {@VehicleId}, with value of: {@IsShortlisted}", 
+                shortlistRequest.VehicleId, shortlistRequest.Shortlist);
 
             return new OkResult();
         }
-
-        [HttpPost("Purchasing")]
-        public async Task<IActionResult> GetPurchasingOptions([FromBody] MockRequest purchasingRequest)
+        
+        [HttpPost("Shortlist/Note")]
+        public async Task<IActionResult> ShortlistNotes([FromBody] ShortlistNoteRequest noteRequest)
         {
-            UserInfo userInfo = JWTHelper.GetUserInfoFromToken(User.Claims.ToList(), Request.Headers);
-            MockResponse purchasingOptions = await _manager.GetPurchasingOptions(userInfo.BuyerId.Value, purchasingRequest);
-            _logger.LogInformation("Mock message, request: , response: ");
-            
-            return new OkObjectResult(purchasingOptions);
-        }
+            try
+            {
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                var retryPolicy = Policy
+                    .Handle<Exception>()
+                    .WaitAndRetryAsync(MaxRetryAttempts, i => _pauseBetweenFailures,
+                        (exception, span, retryCount, context) =>
+                        {
+                            _logger.LogWarning(exception, "{@Action} Retrying {@RetryCount}", "shortlistNotes", retryCount);
+                        });
+                
+                await retryPolicy.ExecuteAsync(async () =>
+                {
+                    await _shortlistManager.AddShortlistNotes(noteRequest);
+                });
 
-        [HttpPost("Purchase")]
-        public async Task<IActionResult> PurchaseVehicle([FromBody] MockRequest purchaseRequest)
-        {
-            UserInfo userInfo = JWTHelper.GetUserInfoFromToken(User.Claims.ToList(), Request.Headers);
-            MockResponse purchaseResponse = await _manager.PurchaseVehicle(userInfo.BuyerId.Value, userInfo.UserId.Value, purchaseRequest);
-            _logger.LogInformation("Mock message, request: , response: ");
+                sw.Stop();
+                _logger.LogInformation("Shortlist notes for VehicleId: {@VehicleId}, set to: {@Notes} and took: {@ElapsedMilliseconds}", 
+                    noteRequest.VehicleId, noteRequest.Note, sw.ElapsedMilliseconds);
+                
+                return new OkResult();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Updating Shortlist notes failed. ");
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
             
-            return new OkObjectResult(purchaseResponse);
         }
 
         [HttpPost("Bid")]
         public async Task<IActionResult> PlaceBidOnVehicle([FromBody] BidRequest bidRequest)
         {
-            UserInfo userInfo = JWTHelper.GetUserInfoFromToken(User.Claims.ToList(), Request.Headers);
-            BidResponse bidResponse = await _manager.Bid(userInfo.BuyerId.Value, bidRequest);
+            BidResponse bidResponse = await _vehicleManager.Bid(bidRequest);
             _logger.LogInformation("Bid called , request: {@BiddingRequest}, response: {@BiddingResult}", bidRequest, bidResponse);
             
             return new OkObjectResult(bidResponse);
