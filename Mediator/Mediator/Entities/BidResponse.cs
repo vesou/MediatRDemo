@@ -16,10 +16,11 @@
             IsHighestBidder = isHighestBidder;
             BidAmount = bidAmount;
         }
-        
-        public bool Success { get; set; }
+
+        public decimal? BidAmount { get; set; }
         public string Error { get; set; }
         public bool IsHighestBidder { get; set; }
-        public decimal? BidAmount { get; set; }
+
+        public bool Success { get; set; }
     }
 }

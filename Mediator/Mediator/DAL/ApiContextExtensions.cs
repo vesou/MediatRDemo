@@ -5,8 +5,24 @@ namespace Mediator.DAL
 {
     public static class ApiContextExtensions
     {
-        public static Task EnableIdentityInsert<T>(this ApiContext context) => SetIdentityInsert<T>(context, enable: true);
-        public static Task DisableIdentityInsert<T>(this ApiContext context) => SetIdentityInsert<T>(context, enable: false);
+        public static async Task SaveChangesWithIdentityInsert<T>(this ApiContext context)
+        {
+            await using var transaction = await context.Database.BeginTransactionAsync();
+            await context.EnableIdentityInsert<T>();
+            await context.SaveChangesAsync();
+            await context.DisableIdentityInsert<T>();
+            await transaction.CommitAsync();
+        }
+
+        private static Task DisableIdentityInsert<T>(this ApiContext context)
+        {
+            return SetIdentityInsert<T>(context, false);
+        }
+
+        private static Task EnableIdentityInsert<T>(this ApiContext context)
+        {
+            return SetIdentityInsert<T>(context, true);
+        }
 
         private static Task SetIdentityInsert<T>(ApiContext context, bool enable)
         {
@@ -15,15 +31,5 @@ namespace Mediator.DAL
             return context.Database.ExecuteSqlRawAsync(
                 $"SET IDENTITY_INSERT dbo.{entityType.GetTableName()} {value}");
         }
-
-        public static void SaveChangesWithIdentityInsert<T>(this ApiContext context)
-        {
-            using var transaction = context.Database.BeginTransaction();
-            context.EnableIdentityInsert<T>();
-            context.SaveChanges();
-            context.DisableIdentityInsert<T>();
-            transaction.Commit();
-        }
-
     }
 }

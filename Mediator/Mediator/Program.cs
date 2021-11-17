@@ -10,6 +10,12 @@ namespace Mediator
 {
     public class Program
     {
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            return Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+        }
+
         public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
@@ -17,10 +23,6 @@ namespace Mediator
             await host.RunAsync();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
-        
         private static async Task CreateDbIfNotExists(IHost host)
         {
             using var scope = host.Services.CreateScope();

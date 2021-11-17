@@ -5,7 +5,7 @@ namespace Mediator.Interfaces
 {
     public interface IShortlistManager
     {
-        Task UpdateShortlist(ShortlistRequest request);
         Task AddShortlistNotes(ShortlistNoteRequest request);
+        Task UpdateShortlist(ShortlistRequest request);
     }
 }

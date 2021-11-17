@@ -205,9 +205,6 @@ project.lock.json
 *.vc.vc.opendb
 *.vc.db
 
-# Rider
-.idea/
-
 # Visual Studio Code
 .vscode/
 

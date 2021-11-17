@@ -12,7 +12,7 @@ namespace Mediator.Managers
         {
             _biddingRepository = biddingRepository;
         }
-        
+
         public async Task<BidResponse> Bid(BidRequest bidRequest)
         {
             var validationResultTask = _biddingRepository.ValidateBid(bidRequest);
@@ -22,7 +22,7 @@ namespace Mediator.Managers
             {
                 return new BidResponse(validationResult.ValidationError);
             }
-            
+
             BiddingInformation currentBidInformation = await currentBidInformationTask;
             if (currentBidInformation == null)
             {
