@@ -6,12 +6,14 @@ namespace Mediator.Managers
 {
     public class ShortlistManager : IShortlistManager
     {
-        public async Task AddShortlistNotes(ShortlistNoteRequest request)
+        public Task AddShortlistNotes(ShortlistNoteRequest request)
         {
+            return Task.CompletedTask;
         }
 
-        public async Task UpdateShortlist(ShortlistRequest request)
+        public Task UpdateShortlist(ShortlistRequest request)
         {
+            return Task.CompletedTask;
         }
     }
 }

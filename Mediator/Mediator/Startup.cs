@@ -32,9 +32,7 @@ namespace Mediator
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
@@ -54,6 +52,7 @@ namespace Mediator
             services.AddDbContext<ApiContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ApiContext")));
             services.AddScoped<IBiddingRepository, BiddingRepository>();
+            services.AddScoped<IVehicleRepository, VehicleRepository>();
         }
     }
 }

@@ -28,7 +28,12 @@ namespace Mediator.Managers
             }
 
             VehicleInfo vehicleDetails = await vehicleDetailsTask;
-            if (vehicleDetails.IsSold)
+            if (vehicleDetails == null)
+            {
+                return new BidResponse("Vehicle doesn't exist.");
+            }
+            
+            if (!vehicleDetails.OnSale)
             {
                 return new BidResponse("Vehicle no longer on sale.");
             }
