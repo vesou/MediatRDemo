@@ -7,20 +7,30 @@ namespace Mediator.Managers
     public class VehicleManager : IVehicleManager
     {
         private readonly IBiddingRepository _biddingRepository;
+        private readonly IVehicleRepository _vehicleRepository;
 
-        public VehicleManager(IBiddingRepository biddingRepository)
+        public VehicleManager(IBiddingRepository biddingRepository, IVehicleRepository vehicleRepository)
         {
             _biddingRepository = biddingRepository;
+            _vehicleRepository = vehicleRepository;
         }
 
         public async Task<BidResponse> Bid(BidRequest bidRequest)
         {
-            var validationResultTask = _biddingRepository.ValidateBid(bidRequest);
-            var currentBidInformationTask = _biddingRepository.GetBiddingInformation(bidRequest.VehicleId);
+            var validationResultTask = _biddingRepository.ValidateBidAsync(bidRequest);
+            var vehicleDetailsTask = _vehicleRepository.GetInfoAsync(bidRequest.VehicleId);
+            var currentBidInformationTask = _biddingRepository.GetBiddingInformationAsync(bidRequest.VehicleId);
+            
             ValidationResult validationResult = await validationResultTask;
             if (!validationResult.ValidationPassed)
             {
                 return new BidResponse(validationResult.ValidationError);
+            }
+
+            VehicleInfo vehicleDetails = await vehicleDetailsTask;
+            if (vehicleDetails.IsSold)
+            {
+                return new BidResponse("Vehicle no longer on sale.");
             }
 
             BiddingInformation currentBidInformation = await currentBidInformationTask;

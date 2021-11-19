@@ -2,8 +2,7 @@
 {
     public class BidRequest
     {
-        public decimal MaxBidAmount { get; set; }
-        public int? SelectedGroupSiteId { get; set; }
+        public decimal BidAmount { get; set; }
         public int VehicleId { get; set; }
     }
 }

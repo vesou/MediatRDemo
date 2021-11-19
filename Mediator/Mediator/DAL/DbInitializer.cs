@@ -10,18 +10,22 @@ namespace Mediator.DAL
         {
             await context.Database.EnsureCreatedAsync();
 
-            // Look for any students.
             if (context.Vehicles.Any())
             {
                 return; // DB has been seeded
             }
 
-            var vehicle = new Vehicle { Id = 1, Make = "Audi", Model = "A6" };
-            await context.Vehicles.AddAsync(vehicle);
+            var vehicles = new[]
+            {
+                new Vehicle { Id = 1, Make = "Audi", Model = "A6", OnSale = true },
+                new Vehicle { Id = 2, Make = "Skoda", Model = "Fabia", OnSale = true },
+                new Vehicle { Id = 3, Make = "Tesla", Model = "Model 3", OnSale = false }
+            };
+            await context.Vehicles.AddRangeAsync(vehicles);
             await context.SaveChangesWithIdentityInsert<Vehicle>();
 
 
-            var bid = new Bid { Id = 1, User = "Simon", Amount = 1000, VehicleId = vehicle.Id };
+            var bid = new Bid { Id = 1, Amount = 10000, VehicleId = 2 };
             await context.Bids.AddAsync(bid);
             await context.SaveChangesWithIdentityInsert<Bid>();
         }

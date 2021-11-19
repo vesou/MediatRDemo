@@ -5,8 +5,8 @@ namespace Mediator.Interfaces
 {
     public interface IBiddingRepository
     {
-        Task<BiddingInformation> GetBiddingInformation(int vehicleId);
+        Task<BiddingInformation> GetBiddingInformationAsync(int vehicleId);
         Task<BidResult> PlaceBid(BidRequest bidRequest, BiddingInformation currentBidInformation);
-        Task<ValidationResult> ValidateBid(BidRequest request);
+        Task<ValidationResult> ValidateBidAsync(BidRequest request);
     }
 }
