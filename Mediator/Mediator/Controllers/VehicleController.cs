@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using AutoMapper;
+using Mediator.Commands;
 using Mediator.Entities;
 using Mediator.Interfaces;
 using Mediator.Queries;
@@ -18,18 +20,20 @@ namespace Mediator.Controllers
     {
         private const int MaxRetryAttempts = 3;
         private readonly ILogger _logger;
+        private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
         private readonly TimeSpan _pauseBetweenFailures = TimeSpan.FromSeconds(2);
         private readonly IShortlistManager _shortlistManager;
         private readonly IVehicleManager _vehicleManager;
-        private readonly IMediator _mediator;
 
         public VehicleController(IVehicleManager vehicleVehicleManager, ILogger<VehicleController> logger,
-            IShortlistManager shortlistManager, IMediator mediator)
+            IShortlistManager shortlistManager, IMediator mediator, IMapper mapper)
         {
             _vehicleManager = vehicleVehicleManager;
             _logger = logger;
             _shortlistManager = shortlistManager;
             _mediator = mediator;
+            _mapper = mapper;
         }
 
         [HttpGet("{vehicleId:int}")]
@@ -46,6 +50,16 @@ namespace Mediator.Controllers
         public async Task<IActionResult> PlaceBidOnVehicle([FromBody] BidRequest bidRequest)
         {
             BidResponse bidResponse = await _vehicleManager.Bid(bidRequest);
+            _logger.LogInformation("Bid called , request: {@BiddingRequest}, response: {@BiddingResult}", bidRequest,
+                bidResponse);
+
+            return new OkObjectResult(bidResponse);
+        }
+
+        [HttpPost("Bid2")]
+        public async Task<IActionResult> PlaceBidOnVehicle2([FromBody] BidRequest bidRequest)
+        {
+            PlaceBid.Response bidResponse = await _mediator.Send(_mapper.Map<PlaceBid.Command>(bidRequest));
             _logger.LogInformation("Bid called , request: {@BiddingRequest}, response: {@BiddingResult}", bidRequest,
                 bidResponse);
 

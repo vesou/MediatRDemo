@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace NormalApi.DAL.Models
+﻿namespace NormalApi.DAL.Models
 {
     public class Vehicle
     {

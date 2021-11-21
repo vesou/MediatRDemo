@@ -19,10 +19,10 @@
         }
 
         public decimal? BidAmount { get; set; }
+        public int BidId { get; set; }
         public string Error { get; set; }
         public bool IsHighestBidder { get; set; }
 
         public bool Success { get; set; }
-        public int BidId { get; set; }
     }
 }

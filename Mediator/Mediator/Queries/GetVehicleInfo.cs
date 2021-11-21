@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Mediator.Entities;
@@ -13,12 +12,12 @@ namespace Mediator.Queries
     {
         public class Request : IRequest<Response>
         {
-            public int VehicleId { get; set; }
-
             public Request(int vehicleId)
             {
                 VehicleId = vehicleId;
             }
+
+            public int VehicleId { get; set; }
         }
 
         public class Handler : IRequestHandler<Request, Response>
@@ -37,7 +36,7 @@ namespace Mediator.Queries
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
                 VehicleInfo vehicleInfo = await _vehicleRepository.GetInfo(request.VehicleId);
-                return vehicleInfo is not null 
+                return vehicleInfo is not null
                     ? _mapper.Map<Response>(vehicleInfo)
                     : null;
             }

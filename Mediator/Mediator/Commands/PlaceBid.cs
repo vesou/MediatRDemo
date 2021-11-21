@@ -42,18 +42,16 @@ namespace Mediator.Commands
             public async Task<Response> Handle(Command command, CancellationToken cancellationToken)
             {
                 BidRequest request = _mapper.Map<BidRequest>(command);
-                var validationResultTask = _biddingRepository.ValidateBid(request);
-                var vehicleDetailsTask =
-                    _mediator.Send(new GetVehicleInfo.Request(command.VehicleId), cancellationToken);
-                var currentBidInformationTask = _biddingRepository.GetBiddingInformation(command.VehicleId);
+                var validationResult = await _biddingRepository.ValidateBid(request);
 
-                ValidationResult validationResult = await validationResultTask;
                 if (!validationResult.ValidationPassed)
                 {
                     return Response.Failed(validationResult.ValidationError);
                 }
 
-                GetVehicleInfo.Response vehicleDetails = await vehicleDetailsTask;
+                var vehicleDetails =
+                    await _mediator.Send(new GetVehicleInfo.Request(command.VehicleId), cancellationToken);
+
                 if (vehicleDetails == null)
                 {
                     return Response.Failed("Vehicle doesn't exist.");
@@ -64,7 +62,7 @@ namespace Mediator.Commands
                     return Response.Failed("Vehicle no longer on sale.");
                 }
 
-                BiddingInformation currentBidInformation = await currentBidInformationTask;
+                var currentBidInformation = await _biddingRepository.GetBiddingInformation(command.VehicleId);
                 if (currentBidInformation == null)
                 {
                     return Response.Failed("Error getting PlaceBidInfo.");
