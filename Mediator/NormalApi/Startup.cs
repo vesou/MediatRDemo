@@ -8,7 +8,6 @@ using Microsoft.OpenApi.Models;
 using NormalApi.DAL;
 using NormalApi.Interfaces;
 using NormalApi.Managers;
-using NormalApi.Middlewares;
 using NormalApi.Repositories;
 
 namespace NormalApi
@@ -50,7 +49,7 @@ namespace NormalApi
 
             services.AddDbContext<ApiContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ApiContext")));
-            
+
             services.AddScoped<IShortlistManager, ShortlistManager>();
             services.AddScoped<IVehicleManager, VehicleManager>();
             services.AddScoped<IBiddingRepository, BiddingRepository>();

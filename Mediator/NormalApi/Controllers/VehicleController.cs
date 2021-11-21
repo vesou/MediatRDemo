@@ -12,7 +12,7 @@ namespace NormalApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class VehicleController : ControllerBase
+    public class VehicleController : BaseController
     {
         private const int MaxRetryAttempts = 3;
         private readonly ILogger _logger;
@@ -26,6 +26,16 @@ namespace NormalApi.Controllers
             _vehicleManager = vehicleVehicleManager;
             _logger = logger;
             _shortlistManager = shortlistManager;
+        }
+
+        [HttpGet("{vehicleId}")]
+        public async Task<IActionResult> GetVehicleInfo(int vehicleId)
+        {
+            VehicleInfo vehicleInfo = await _vehicleManager.GetInfo(vehicleId);
+            _logger.LogInformation("GetVehicleInfo called , for vehicleId: {@VehicleId}, response: {@VehicleInfo}",
+                vehicleId, vehicleInfo);
+
+            return OkOrNotFound(vehicleInfo);
         }
 
         [HttpPost("Bid")]

@@ -53,5 +53,10 @@ namespace NormalApi.Managers
 
             return new BidResponse(bidResult.BidId.Value, bidResult.IsHighestBidder, bidResult.BidAmount.Value);
         }
+
+        public Task<VehicleInfo> GetInfo(int vehicleId)
+        {
+            return _vehicleRepository.GetInfoAsync(vehicleId);
+        }
     }
 }

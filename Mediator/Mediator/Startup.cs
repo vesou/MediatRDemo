@@ -49,10 +49,11 @@ namespace Mediator
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Mediator", Version = "v1" });
             });
 
-            services.AddScoped<IShortlistManager, ShortlistManager>();
-            services.AddScoped<IVehicleManager, VehicleManager>();
             services.AddDbContext<ApiContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ApiContext")));
+
+            services.AddScoped<IShortlistManager, ShortlistManager>();
+            services.AddScoped<IVehicleManager, VehicleManager>();
             services.AddScoped<IBiddingRepository, BiddingRepository>();
             services.AddScoped<IVehicleRepository, VehicleRepository>();
         }
