@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Mediator.Entities;
 using Mediator.Interfaces;
+using Mediator.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -19,19 +21,21 @@ namespace Mediator.Controllers
         private readonly TimeSpan _pauseBetweenFailures = TimeSpan.FromSeconds(2);
         private readonly IShortlistManager _shortlistManager;
         private readonly IVehicleManager _vehicleManager;
+        private readonly IMediator _mediator;
 
         public VehicleController(IVehicleManager vehicleVehicleManager, ILogger<VehicleController> logger,
-            IShortlistManager shortlistManager)
+            IShortlistManager shortlistManager, IMediator mediator)
         {
             _vehicleManager = vehicleVehicleManager;
             _logger = logger;
             _shortlistManager = shortlistManager;
+            _mediator = mediator;
         }
 
         [HttpGet("{vehicleId}")]
         public async Task<IActionResult> GetVehicleInfo(int vehicleId)
         {
-            VehicleInfo vehicleInfo = await _vehicleManager.GetInfo(vehicleId);
+            GetVehicleInfo.Response vehicleInfo = await _mediator.Send(new GetVehicleInfo.Request(vehicleId));
             _logger.LogInformation("GetVehicleInfo called , for vehicleId: {@VehicleId}, response: {@VehicleInfo}",
                 vehicleId, vehicleInfo);
 

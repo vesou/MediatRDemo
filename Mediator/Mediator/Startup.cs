@@ -3,6 +3,7 @@ using Mediator.Interfaces;
 using Mediator.Managers;
 using Mediator.Middlewares;
 using Mediator.Repositories;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -56,6 +57,8 @@ namespace Mediator
             services.AddScoped<IVehicleManager, VehicleManager>();
             services.AddScoped<IBiddingRepository, BiddingRepository>();
             services.AddScoped<IVehicleRepository, VehicleRepository>();
+
+            services.AddMediatR(typeof(Startup));
         }
     }
 }
