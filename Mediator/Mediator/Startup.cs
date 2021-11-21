@@ -1,3 +1,4 @@
+using Mediator.Behaviours;
 using Mediator.DAL;
 using Mediator.Interfaces;
 using Mediator.Managers;
@@ -53,13 +54,17 @@ namespace Mediator
             services.AddDbContext<ApiContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ApiContext")));
 
+            services.AddAutoMapper(typeof(Startup));
+            
             services.AddScoped<IShortlistManager, ShortlistManager>();
             services.AddScoped<IVehicleManager, VehicleManager>();
             services.AddScoped<IBiddingRepository, BiddingRepository>();
             services.AddScoped<IVehicleRepository, VehicleRepository>();
 
+            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(TimingPipelineBehaviour<,>));
+            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingPipelineBehaviour<,>));
+            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(RetryPipelineBehaviour<,>));
             services.AddMediatR(typeof(Startup));
-            services.AddAutoMapper(typeof(Startup));
         }
     }
 }

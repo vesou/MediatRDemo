@@ -11,7 +11,7 @@ namespace Mediator.Commands
 {
     public static class PlaceBid
     {
-        public class Command : IRequest<Response>
+        public class Command : IRequest<Response>, ILoggable
         {
             public Command(int vehicleId, decimal bidAmount)
             {
@@ -21,6 +21,10 @@ namespace Mediator.Commands
 
             public decimal BidAmount { get; set; }
             public int VehicleId { get; set; }
+            public (string Message, object Data) ToLogMessage()
+            {
+                return ("Place bid command called", new { BidAmount = BidAmount, VehicleId = VehicleId});
+            }
         }
 
         public class Handler : IRequestHandler<Command, Response>
