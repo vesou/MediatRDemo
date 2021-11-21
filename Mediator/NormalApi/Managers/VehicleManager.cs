@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Mediator.Entities;
-using Mediator.Interfaces;
+using NormalApi.Entities;
+using NormalApi.Interfaces;
 
-namespace Mediator.Managers
+namespace NormalApi.Managers
 {
     public class VehicleManager : IVehicleManager
     {

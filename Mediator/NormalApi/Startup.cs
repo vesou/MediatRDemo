@@ -1,8 +1,3 @@
-using Mediator.DAL;
-using Mediator.Interfaces;
-using Mediator.Managers;
-using Mediator.Middlewares;
-using Mediator.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -10,8 +5,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using NormalApi.DAL;
+using NormalApi.Interfaces;
+using NormalApi.Managers;
+using NormalApi.Middlewares;
+using NormalApi.Repositories;
 
-namespace Mediator
+namespace NormalApi
 {
     public class Startup
     {
@@ -29,13 +29,12 @@ namespace Mediator
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mediator v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "NormalApi v1"));
             }
 
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
-            app.UseMiddleware<TimingMiddleware>();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
@@ -46,13 +45,14 @@ namespace Mediator
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Mediator", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "NormalApi", Version = "v1" });
             });
 
-            services.AddScoped<IShortlistManager, ShortlistManager>();
-            services.AddScoped<IVehicleManager, VehicleManager>();
             services.AddDbContext<ApiContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ApiContext")));
+            
+            services.AddScoped<IShortlistManager, ShortlistManager>();
+            services.AddScoped<IVehicleManager, VehicleManager>();
             services.AddScoped<IBiddingRepository, BiddingRepository>();
             services.AddScoped<IVehicleRepository, VehicleRepository>();
         }

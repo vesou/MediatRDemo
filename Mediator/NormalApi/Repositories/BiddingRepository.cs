@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Mediator.DAL;
-using Mediator.DAL.Models;
-using Mediator.Entities;
-using Mediator.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using NormalApi.DAL;
+using NormalApi.DAL.Models;
+using NormalApi.Entities;
+using NormalApi.Interfaces;
 
-namespace Mediator.Repositories
+namespace NormalApi.Repositories
 {
     public class BiddingRepository : IBiddingRepository
     {

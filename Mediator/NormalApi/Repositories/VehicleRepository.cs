@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
-using Mediator.DAL;
-using Mediator.Entities;
-using Mediator.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using NormalApi.DAL;
+using NormalApi.Entities;
+using NormalApi.Interfaces;
 
-namespace Mediator.Repositories
+namespace NormalApi.Repositories
 {
     public class VehicleRepository : IVehicleRepository
     {
