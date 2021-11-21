@@ -42,10 +42,10 @@ namespace Mediator.Commands
             public async Task<Response> Handle(Command command, CancellationToken cancellationToken)
             {
                 BidRequest request = _mapper.Map<BidRequest>(command);
-                var validationResultTask = _biddingRepository.ValidateBidAsync(request);
+                var validationResultTask = _biddingRepository.ValidateBid(request);
                 var vehicleDetailsTask =
                     _mediator.Send(new GetVehicleInfo.Request(command.VehicleId), cancellationToken);
-                var currentBidInformationTask = _biddingRepository.GetBiddingInformationAsync(command.VehicleId);
+                var currentBidInformationTask = _biddingRepository.GetBiddingInformation(command.VehicleId);
 
                 ValidationResult validationResult = await validationResultTask;
                 if (!validationResult.ValidationPassed)

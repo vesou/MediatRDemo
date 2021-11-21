@@ -5,8 +5,8 @@ namespace NormalApi.Interfaces
 {
     public interface IBiddingRepository
     {
-        Task<BiddingInformation> GetBiddingInformationAsync(int vehicleId);
+        Task<BiddingInformation> GetBiddingInformation(int vehicleId);
         Task<BidResult> PlaceBid(BidRequest bidRequest, BiddingInformation currentBidInformation);
-        Task<ValidationResult> ValidateBidAsync(BidRequest request);
+        Task<ValidationResult> ValidateBid(BidRequest request);
     }
 }

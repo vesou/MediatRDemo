@@ -36,7 +36,7 @@ namespace Mediator.Queries
 
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                VehicleInfo vehicleInfo = await _vehicleRepository.GetInfoAsync(request.VehicleId);
+                VehicleInfo vehicleInfo = await _vehicleRepository.GetInfo(request.VehicleId);
                 return vehicleInfo is not null 
                     ? _mapper.Map<Response>(vehicleInfo)
                     : null;

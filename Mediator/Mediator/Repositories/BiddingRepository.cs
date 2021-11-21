@@ -18,11 +18,10 @@ namespace Mediator.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<BiddingInformation> GetBiddingInformationAsync(int vehicleId)
+        public async Task<BiddingInformation> GetBiddingInformation(int vehicleId)
         {
-            Vehicle vehicle = await _dbContext.Vehicles.FirstOrDefaultAsync(x => x.Id == vehicleId);
-            List<Bid> bids = vehicle.Bids.ToList();
-            decimal currentBid = bids.Max(x => x.Amount);
+            List<Bid> bids = await _dbContext.Bids.Where(b => b.VehicleId == vehicleId).ToListAsync();
+            decimal currentBid = bids.Any() ? bids.Max(x => x.Amount) : 0;
 
             return new BiddingInformation(currentBid, currentBid + 100, bids.Count);
         }
@@ -48,7 +47,7 @@ namespace Mediator.Repositories
             return result;
         }
 
-        public async Task<ValidationResult> ValidateBidAsync(BidRequest request)
+        public async Task<ValidationResult> ValidateBid(BidRequest request)
         {
             return await Task.Run(() =>
             {

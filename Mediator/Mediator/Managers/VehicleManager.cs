@@ -17,17 +17,15 @@ namespace Mediator.Managers
 
         public async Task<BidResponse> Bid(BidRequest bidRequest)
         {
-            var validationResultTask = _biddingRepository.ValidateBidAsync(bidRequest);
-            var vehicleDetailsTask = _vehicleRepository.GetInfoAsync(bidRequest.VehicleId);
-            var currentBidInformationTask = _biddingRepository.GetBiddingInformationAsync(bidRequest.VehicleId);
+            var validationResult = await _biddingRepository.ValidateBid(bidRequest);
 
-            ValidationResult validationResult = await validationResultTask;
             if (!validationResult.ValidationPassed)
             {
                 return new BidResponse(validationResult.ValidationError);
             }
 
-            VehicleInfo vehicleDetails = await vehicleDetailsTask;
+            var vehicleDetails = await _vehicleRepository.GetInfo(bidRequest.VehicleId);
+
             if (vehicleDetails == null)
             {
                 return new BidResponse("Vehicle doesn't exist.");
@@ -38,7 +36,8 @@ namespace Mediator.Managers
                 return new BidResponse("Vehicle no longer on sale.");
             }
 
-            BiddingInformation currentBidInformation = await currentBidInformationTask;
+            var currentBidInformation = await _biddingRepository.GetBiddingInformation(bidRequest.VehicleId);
+
             if (currentBidInformation == null)
             {
                 return new BidResponse("Error getting PlaceBidInfo.");
@@ -56,7 +55,7 @@ namespace Mediator.Managers
 
         public Task<VehicleInfo> GetInfo(int vehicleId)
         {
-            return _vehicleRepository.GetInfoAsync(vehicleId);
+            return _vehicleRepository.GetInfo(vehicleId);
         }
     }
 }

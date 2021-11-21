@@ -15,9 +15,9 @@ namespace NormalApi.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<VehicleInfo> GetInfoAsync(int vehicleId)
+        public async Task<VehicleInfo> GetInfo(int vehicleId)
         {
-            var vehicle = await _dbContext.Vehicles.FirstOrDefaultAsync(x => x.Id == vehicleId);
+            var vehicle = await _dbContext.Vehicles.FirstOrDefaultAsync(x => x.VehicleId == vehicleId);
             if (vehicle == null) return null;
 
             return new VehicleInfo

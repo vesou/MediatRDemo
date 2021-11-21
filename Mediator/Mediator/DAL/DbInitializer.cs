@@ -17,9 +17,9 @@ namespace Mediator.DAL
 
             var vehicles = new[]
             {
-                new Vehicle { Id = 1, Make = "Audi", Model = "A6", OnSale = true },
-                new Vehicle { Id = 2, Make = "Skoda", Model = "Fabia", OnSale = true },
-                new Vehicle { Id = 3, Make = "Tesla", Model = "Model 3", OnSale = false }
+                new Vehicle { VehicleId = 1, Make = "Audi", Model = "A6", OnSale = true },
+                new Vehicle { VehicleId = 2, Make = "Skoda", Model = "Fabia", OnSale = true },
+                new Vehicle { VehicleId = 3, Make = "Tesla", Model = "Model 3", OnSale = false }
             };
             await context.Vehicles.AddRangeAsync(vehicles);
             await context.SaveChangesWithIdentityInsert<Vehicle>();

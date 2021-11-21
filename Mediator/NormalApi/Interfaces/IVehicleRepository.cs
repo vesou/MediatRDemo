@@ -5,6 +5,6 @@ namespace NormalApi.Interfaces
 {
     public interface IVehicleRepository
     {
-        Task<VehicleInfo> GetInfoAsync(int vehicleId);
+        Task<VehicleInfo> GetInfo(int vehicleId);
     }
 }
