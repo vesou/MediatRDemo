@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Mediator.Entities;
 using Mediator.Interfaces;
 using MediatR;
@@ -23,23 +24,30 @@ namespace Mediator.Queries
         public class Handler : IRequestHandler<Request, Response>
         {
             private readonly ILogger<Handler> _logger;
-            private readonly IVehicleManager _vehicleManager;
+            private readonly IMapper _mapper;
+            private readonly IVehicleRepository _vehicleRepository;
 
-            public Handler(IVehicleManager vehicleManager, ILogger<Handler> logger)
+            public Handler(IVehicleRepository vehicleRepository, ILogger<Handler> logger, IMapper mapper)
             {
-                _vehicleManager = vehicleManager;
+                _vehicleRepository = vehicleRepository;
                 _logger = logger;
+                _mapper = mapper;
             }
 
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                VehicleInfo vehicleInfo = await _vehicleManager.GetInfo(request.VehicleId);
+                VehicleInfo vehicleInfo = await _vehicleRepository.GetInfoAsync(request.VehicleId);
                 return vehicleInfo is not null 
-                    ? new Response(vehicleInfo)
+                    ? _mapper.Map<Response>(vehicleInfo)
                     : null;
             }
         }
 
-        public record Response(VehicleInfo VehicleInfo);
+        public class Response
+        {
+            public string Make { get; set; }
+            public string Model { get; set; }
+            public bool OnSale { get; set; }
+        }
     }
 }

@@ -32,7 +32,7 @@ namespace Mediator.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("{vehicleId}")]
+        [HttpGet("{vehicleId:int}")]
         public async Task<IActionResult> GetVehicleInfo(int vehicleId)
         {
             GetVehicleInfo.Response vehicleInfo = await _mediator.Send(new GetVehicleInfo.Request(vehicleId));

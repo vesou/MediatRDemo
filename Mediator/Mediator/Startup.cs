@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using AutoMapper;
 
 namespace Mediator
 {
@@ -59,6 +60,7 @@ namespace Mediator
             services.AddScoped<IVehicleRepository, VehicleRepository>();
 
             services.AddMediatR(typeof(Startup));
+            services.AddAutoMapper(typeof(Startup));
         }
     }
 }

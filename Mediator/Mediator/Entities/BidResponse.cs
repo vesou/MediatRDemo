@@ -15,6 +15,7 @@
             Success = true;
             IsHighestBidder = isHighestBidder;
             BidAmount = bidAmount;
+            BidId = bidId;
         }
 
         public decimal? BidAmount { get; set; }
@@ -22,5 +23,6 @@
         public bool IsHighestBidder { get; set; }
 
         public bool Success { get; set; }
+        public int BidId { get; set; }
     }
 }
