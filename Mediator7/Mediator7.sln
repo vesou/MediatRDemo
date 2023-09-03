@@ -1,12 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediator7", "Mediator7\Mediator7.csproj", "{226ACED8-DE9A-417C-8BF8-ACCD3FAE4D2A}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Normal Api", "Normal Api", "{9E57FD09-0104-45B2-A9BC-9496F1370C48}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediator7Default", "Mediator7Default\Mediator7Default.csproj", "{9728ADAC-51AF-4DE8-87FC-1816249C905D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mediator1", "Mediator1", "{6DC77869-7B83-44C7-9EC0-0FA4011BFC12}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Simple", "Simple", "{C7252C88-FD60-4218-A395-5A4998A80623}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediator7Simple1", "Mediator7Simple1\Mediator7Simple1.csproj", "{0A5B8C42-41BF-43A4-BFDD-DD3119D9CCF3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediator7Simple2", "Mediator7Simple2\Mediator7Simple2.csproj", "{306913B1-A00B-4D0E-B92E-43D36E583E33}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pipelines", "Pipelines", "{A0D1DE25-3716-4DD4-8F4D-02D02AB38B36}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,17 +18,22 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{226ACED8-DE9A-417C-8BF8-ACCD3FAE4D2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{226ACED8-DE9A-417C-8BF8-ACCD3FAE4D2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{226ACED8-DE9A-417C-8BF8-ACCD3FAE4D2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{226ACED8-DE9A-417C-8BF8-ACCD3FAE4D2A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9728ADAC-51AF-4DE8-87FC-1816249C905D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9728ADAC-51AF-4DE8-87FC-1816249C905D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9728ADAC-51AF-4DE8-87FC-1816249C905D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9728ADAC-51AF-4DE8-87FC-1816249C905D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A5B8C42-41BF-43A4-BFDD-DD3119D9CCF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A5B8C42-41BF-43A4-BFDD-DD3119D9CCF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A5B8C42-41BF-43A4-BFDD-DD3119D9CCF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A5B8C42-41BF-43A4-BFDD-DD3119D9CCF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{306913B1-A00B-4D0E-B92E-43D36E583E33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{306913B1-A00B-4D0E-B92E-43D36E583E33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{306913B1-A00B-4D0E-B92E-43D36E583E33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{306913B1-A00B-4D0E-B92E-43D36E583E33}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{9728ADAC-51AF-4DE8-87FC-1816249C905D} = {9E57FD09-0104-45B2-A9BC-9496F1370C48}
-		{226ACED8-DE9A-417C-8BF8-ACCD3FAE4D2A} = {6DC77869-7B83-44C7-9EC0-0FA4011BFC12}
+		{0A5B8C42-41BF-43A4-BFDD-DD3119D9CCF3} = {C7252C88-FD60-4218-A395-5A4998A80623}
+		{306913B1-A00B-4D0E-B92E-43D36E583E33} = {C7252C88-FD60-4218-A395-5A4998A80623}
 	EndGlobalSection
 EndGlobal

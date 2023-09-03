@@ -1,5 +1,3 @@
-using Mediator7.Managers;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,8 +6,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddScoped<IWeatherForecastManager, WeatherForecastManager>();
+builder.Services.AddMediatR(configuration =>
+{
+    configuration.RegisterServicesFromAssemblyContaining<Program>();
+});
 
 var app = builder.Build();
 

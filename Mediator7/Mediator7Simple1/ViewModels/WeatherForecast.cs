@@ -1,4 +1,4 @@
-namespace Mediator7.ViewModels;
+namespace Mediator7Simple1.ViewModels;
 
 public class WeatherForecast
 {
