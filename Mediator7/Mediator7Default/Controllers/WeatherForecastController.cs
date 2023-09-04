@@ -1,8 +1,8 @@
-using Mediator7.Managers;
-using Mediator7.ViewModels;
+using Mediator7Default.Managers;
+using Mediator7Default.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Mediator7.Controllers;
+namespace Mediator7Default.Controllers;
 
 [ApiController]
 [Route("[controller]")]

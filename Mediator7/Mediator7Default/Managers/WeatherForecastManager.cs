@@ -1,6 +1,6 @@
-﻿using Mediator7.ViewModels;
+﻿using Mediator7Default.ViewModels;
 
-namespace Mediator7.Managers;
+namespace Mediator7Default.Managers;
 
 public class WeatherForecastManager : IWeatherForecastManager
 {

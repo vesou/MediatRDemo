@@ -1,4 +1,4 @@
-using Mediator7.Managers;
+using Mediator7Default.Managers;
 
 var builder = WebApplication.CreateBuilder(args);
 
