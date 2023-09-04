@@ -1,4 +1,4 @@
-namespace Mediator7Hangfire;
+namespace Mediator7Hangfire.Helpers;
 
 public class DatabaseConnectionOptions
 {

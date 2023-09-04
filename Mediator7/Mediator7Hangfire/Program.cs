@@ -18,6 +18,7 @@ builder.Services.AddMediatR(cfg =>
     cfg.AddOpenBehavior(typeof(LoggingPipelineBehaviour<,>));
     cfg.AddOpenBehavior(typeof(RetryPipelineBehaviour<,>));
 });
+
 builder.Services.AddHangfireServ(builder.Configuration);
 
 var app = builder.Build();

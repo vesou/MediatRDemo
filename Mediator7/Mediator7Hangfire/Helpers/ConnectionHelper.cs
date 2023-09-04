@@ -1,6 +1,6 @@
 
 
-namespace Mediator7Hangfire;
+namespace Mediator7Hangfire.Helpers;
 
 public static class ConnectionHelper
 {
